@@ -7,6 +7,7 @@ PDF 한글 글꼴: macOS의 AppleGothic(없으면 FONT_PATH를 바꾸세요)
     python3 scripts/make-sample-data.py
 
 결과: public/downloads/*.zip
+회차별 완성본(4·5·6회차)은 samples/ 폴더의 실제 프로젝트를 묶습니다.
 모든 기관명·인물·금액은 가상입니다.
 """
 import io
@@ -262,110 +263,6 @@ document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',
     text(base / "사용법.txt", "1. 출장비계산기.html을 더블클릭하면 브라우저에서 열립니다.\n2. 위쪽에서 여비 기준을 바꿀 수 있습니다.\n3. 3회차: 이 폴더를 Git 저장소로 만들어 보세요.")
 
 
-def session4(base: Path):
-    files = {
-        "package.json": """{
-  "name": "grant-board",
-  "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
-  "dependencies": { "next": "^16.3.8", "react": "^19.3.0", "react-dom": "^19.3.0" },
-  "devDependencies": { "typescript": "^5", "@types/react": "^19", "@types/node": "^22" }
-}
-""",
-        "tsconfig.json": """{
-  "compilerOptions": {
-    "target": "ES2022", "lib": ["dom", "dom.iterable", "esnext"], "strict": true, "noEmit": true,
-    "module": "esnext", "moduleResolution": "bundler", "jsx": "preserve", "esModuleInterop": true,
-    "skipLibCheck": true, "resolveJsonModule": true, "isolatedModules": true, "incremental": true,
-    "plugins": [{ "name": "next" }], "paths": { "@/*": ["./*"] }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
-}
-""",
-        ".gitignore": "node_modules\n.next\nout\n.env*\n.vercel\n",
-        "README.md": "# 공모 D-day 보드 (4회차 완성본)\n\n교육용 가상 데이터로 만든 연구과제 공모 일정 보드입니다.\n\n```bash\nnpm install\nnpm run dev\n```\n\n5회차에서는 data/grants.ts 대신 Supabase에서 데이터를 읽도록 바꿉니다.\n",
-        "CLAUDE.md": "# 작업 규칙\n- 답변과 화면 문구는 한국어로\n- 기능 하나를 마치면 한글 메시지로 커밋\n- 키·비밀번호는 .env.local에만, 코드에 쓰지 않기\n",
-        "data/grants.ts": """export type Grant = { id: number; title: string; agency: string; deadline: string; owner: string };
-
-// 교육용 가상 데이터
-export const grants: Grant[] = [
-  { id: 1, title: '2026 지역혁신 산학협력 지원사업', agency: '가상혁신진흥원', deadline: '2026-11-14', owner: '김산단' },
-  { id: 2, title: '국가R&D 기초연구 신규과제', agency: '가상연구재단', deadline: '2026-10-28', owner: '이협력' },
-  { id: 3, title: '기업 수요기반 공동연구', agency: '가온테크', deadline: '2026-12-05', owner: '박연구' },
-  { id: 4, title: '청년 연구인력 채용지원', agency: '가상산업원', deadline: '2026-10-20', owner: '김산단' },
-  { id: 5, title: '대학 기술사업화 촉진사업', agency: '가상기술원', deadline: '2026-11-30', owner: '최기술' },
-  { id: 6, title: '바이오헬스 실증 연구', agency: '나래바이오', deadline: '2027-01-15', owner: '정바이오' },
-  { id: 7, title: '탄소중립 소재 개발', agency: '다올소재', deadline: '2026-12-19', owner: '이협력' },
-  { id: 8, title: '로봇 서비스 리빙랩', agency: '라온로보틱스', deadline: '2026-11-07', owner: '박연구' },
-  { id: 9, title: '공공데이터 활용 창업지원', agency: '가상데이터진흥원', deadline: '2026-10-31', owner: '한데이터' },
-  { id: 10, title: '스마트팜 현장 연구', agency: '새솔푸드', deadline: '2027-02-02', owner: '최기술' },
-];
-""",
-        "app/layout.tsx": """import type { ReactNode } from 'react';
-import './globals.css';
-
-export const metadata = { title: '삼육대 산단 공모 보드', description: '연구과제 공모 일정 D-day 보드 (교육용)' };
-
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="ko">
-      <body>{children}</body>
-    </html>
-  );
-}
-""",
-        "app/globals.css": """* { box-sizing: border-box; }
-body { margin: 0; font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; letter-spacing: -0.02em; background: #f5f7fa; color: #17191c; }
-main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
-h1 { background: #002855; color: #fff; padding: 18px 20px; border-radius: 14px; font-size: 24px; margin: 0 0 16px; }
-.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-.card { background: #fff; border: 1px solid #e3e6ea; border-radius: 14px; padding: 16px; }
-.card.urgent { border-color: #b91c1c; }
-.dday { font-weight: 700; font-size: 20px; }
-.urgent .dday { color: #b91c1c; }
-.past { opacity: .5; }
-.meta { color: #5b616b; font-size: 14px; margin-top: 6px; }
-""",
-        "app/page.tsx": """import { grants } from '@/data/grants';
-
-// 오늘 날짜 기준 D-day를 매번 새로 계산하도록 요청마다 렌더링
-export const dynamic = 'force-dynamic';
-
-function dday(deadline: string) {
-  const today = new Date(new Date().toISOString().slice(0, 10));
-  return Math.round((Date.parse(deadline) - today.getTime()) / 86_400_000);
-}
-
-export default function Page() {
-  const list = [...grants].sort((a, b) => a.deadline.localeCompare(b.deadline));
-  return (
-    <main>
-      <h1>삼육대 산단 공모 보드</h1>
-      <div className="grid">
-        {list.map((g) => {
-          const d = dday(g.deadline);
-          return (
-            <article key={g.id} className={`card ${d >= 0 && d <= 7 ? 'urgent' : ''} ${d < 0 ? 'past' : ''}`}>
-              <div className="dday">{d < 0 ? '마감' : d === 0 ? 'D-DAY' : `D-${d}`}</div>
-              <strong>{g.title}</strong>
-              <div className="meta">{g.agency} · 마감 {g.deadline} · 담당 {g.owner}</div>
-            </article>
-          );
-        })}
-      </div>
-      <p className="meta">교육용 가상 데이터</p>
-    </main>
-  );
-}
-""",
-    }
-    for rel, content in files.items():
-        p = base / rel
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(content, encoding="utf-8")
-
-
 def session6(base: Path):
     notices = [
         ("공고문_1_기술사업화.txt", "2026년 대학 기술사업화 촉진사업 공고\n주관기관: 가상기술원\n지원규모: 과제당 최대 5천만 원, 8개 과제 내외\n신청기간: 2026-10-14 ~ 2026-11-30 17:00\n지원자격: 대학 산학협력단 (기술이전 실적 1건 이상)\n문의: 가상기술원 사업화팀"),
@@ -405,6 +302,23 @@ def zip_dir(src: Path, dest: Path, root_name: str):
                 z.write(f, Path(root_name) / f.relative_to(src))
 
 
+SAMPLES = ROOT / "samples"
+SKIP = {"node_modules", ".next", "out", ".vercel"}
+
+
+def zip_sample(src: Path, dest: Path):
+    """samples/ 아래의 완성본 프로젝트를 node_modules 등을 빼고 묶는다"""
+    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as z:
+        for f in sorted(src.rglob("*")):
+            rel = f.relative_to(src)
+            if any(part in SKIP for part in rel.parts) or f.name in {"next-env.d.ts"} or f.suffix == ".tsbuildinfo":
+                continue
+            if f.name.startswith(".env") and f.name != ".env.local.example":
+                continue  # 실제 키가 든 파일은 절대 묶지 않는다
+            if f.is_file():
+                z.write(f, Path("grant-board") / rel)
+
+
 def main():
     if BUILD.exists():
         shutil.rmtree(BUILD)
@@ -412,7 +326,6 @@ def main():
         ("session1-practice", "1회차_실습폴더", session1),
         ("session2-practice", "2회차_실습폴더", session2),
         ("session3-expense-calculator", "출장비계산기", session3),
-        ("session4-grant-board", "grant-board", session4),
         ("session6-practice", "6회차_실습자료", session6),
     ]
     for slug, folder, fn in jobs:
@@ -422,6 +335,9 @@ def main():
         zip_dir(base, OUT / f"{slug}.zip", folder)
         print(f"✓ {slug}.zip ({sum(1 for f in base.rglob('*') if f.is_file())} files)")
     shutil.rmtree(BUILD)
+    for n in (4, 5, 6):
+        zip_sample(SAMPLES / f"grant-board-s{n}", OUT / f"session{n}-grant-board.zip")
+        print(f"✓ session{n}-grant-board.zip")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,11 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; letter-spacing: -0.02em; background: #f5f7fa; color: #17191c; }
+main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { background: #002855; color: #fff; padding: 18px 20px; border-radius: 14px; font-size: 24px; margin: 0 0 16px; }
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.card { background: #fff; border: 1px solid #e3e6ea; border-radius: 14px; padding: 16px; }
+.card.urgent { border-color: #b91c1c; }
+.dday { font-weight: 700; font-size: 20px; }
+.urgent .dday { color: #b91c1c; }
+.past { opacity: .5; }
+.meta { color: #5b616b; font-size: 14px; margin-top: 6px; }

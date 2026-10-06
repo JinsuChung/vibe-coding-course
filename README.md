@@ -23,5 +23,7 @@ pnpm dev
 | 퀴즈 | `content/data/quizzes.ts` |
 | 용어사전 / FAQ | `content/data/glossary.ts`, `content/data/faq.ts` |
 | 요금·버전 등 바뀌는 정보 | `content/data/facts.ts` |
+| 회차별 완성본 (4·5·6회차 공모 보드) | `samples/grant-board-s4`, `-s5`, `-s6` |
+| 자료실 zip 다시 만들기 | `python3 scripts/make-sample-data.py` (openpyxl, pillow, reportlab, python-docx 필요) |
 
 `main` 브랜치에 푸시하면 Vercel이 자동으로 다시 배포합니다.

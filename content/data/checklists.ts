@@ -63,6 +63,7 @@ export const checklists: Record<string, CheckList> = {
     items: [
       { id: 'console', label: 'Claude Console 계정, API 크레딧, 월 사용 한도 설정', href: 'https://platform.claude.com' },
       { id: 'supabase-wake', label: 'Supabase 프로젝트가 일시정지돼 있지 않은지 확인' },
+      { id: 'session5-done', label: '5회차 공모 보드가 동작함 (없으면 자료실의 5회차 완성본 사용)', href: '/downloads' },
       { id: 'sample-6', label: '6회차 공고문·회의록 자료 내려받기', href: '/downloads' },
     ],
   },

@@ -12,6 +12,8 @@ const files = [
   { name: '2회차 실습 자료', file: '/downloads/session2-practice.zip', desc: '집행내역 엑셀 10개(양식 조금씩 다름), 증빙 파일 20개, 증빙목록, 협약서 PDF', icon: FileArchive },
   { name: '3회차 시작 자료 · 출장비 계산기', file: '/downloads/session3-expense-calculator.zip', desc: '2회차 실습 2-3의 완성본. 2회차 결과물이 없으면 이것으로 시작', icon: FileArchive },
   { name: '4회차 완성본 · 공모 D-day 보드', file: '/downloads/session4-grant-board.zip', desc: 'Next.js 공모 보드 (가상 데이터 10건). 5회차를 이것으로 시작할 수 있어요', icon: FileArchive },
+  { name: '5회차 완성본 · 공모 보드 + Supabase', file: '/downloads/session5-grant-board.zip', desc: 'DB 연결, 담당자 로그인, 등록 폼, RLS 정책 SQL 포함. 6회차를 이것으로 시작할 수 있어요', icon: FileArchive },
+  { name: '6회차 완성본 · 공고문 자동 등록', file: '/downloads/session6-grant-board.zip', desc: '5회차 + Claude API로 공고문에서 항목 추출, 숨은 지시문 경고, 로그인한 담당자만 호출', icon: FileArchive },
   { name: '6회차 실습 자료', file: '/downloads/session6-practice.zip', desc: '가상 공고문 3개(1개는 숨은 지시문 포함), 회의록 5개, 문의 메일 8개', icon: FileArchive },
   { name: '교안 PDF (인쇄용)', file: '/downloads/vibe-coding-handout.pdf', desc: 'A4 인쇄용 강의 교안 전체', icon: FileText },
 ];
