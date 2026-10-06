@@ -21,6 +21,8 @@ import {
 import { Term } from '@/components/ui/term';
 import { OSBlock, OSOnly, Kbd } from '@/components/ui/os';
 import { Sim } from '@/components/sim';
+import { CostCalculator, CostTable } from '@/components/tools/cost';
+import { PromptBuilder } from '@/components/tools/prompt-builder';
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
@@ -53,6 +55,9 @@ export function getMDXComponents(components?: MDXComponents) {
     OSOnly,
     Kbd,
     Sim,
+    CostCalculator,
+    CostTable,
+    PromptBuilder,
     ...components,
   } satisfies MDXComponents;
 }

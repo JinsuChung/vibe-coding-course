@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
       tree={source.getPageTree()}
       {...base}
       links={[]}
-      sidebar={{ banner: <SidebarProgress />, collapsible: true }}
+      sidebar={{ banner: <SidebarProgress key="progress" />, collapsible: true }}
     >
       {children}
       <PresentController />

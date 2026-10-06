@@ -1,0 +1,173 @@
+---
+title: 3회차 · Git과 GitHub
+description: 명령어는 외울 필요 없습니다. 개념 4개만 알고, 실행은 Claude Code에게 말로 시킵니다.
+---
+
+<SessionHeader n={3} />
+
+<Checklist list="prep-3" compact />
+
+## 시작하며
+
+"최종.hwp", "최종_수정.hwp", "최종_진짜최종_v3.hwp"… 이런 파일 이름을 만들어 본 적 있나요? 오늘은 그 문제를 제대로 푸는 도구를 배웁니다.
+
+## 개념
+
+### 왜 AI와 일할수록 버전 관리가 필수인가
+
+- AI는 한 번에 여러 파일을 빠르게 고칩니다. 잘되던 기능이 다른 요청 때문에 깨지는 일이 흔합니다.
+- Claude Code에도 되돌리기(`/rewind`)가 있지만, 공식 문서도 "Git을 대신하지 않는다"고 밝힙니다. 명령으로 바뀐 파일이나 다른 사람과의 공유는 추적하지 못합니다 ([Best practices](https://code.claude.com/docs/en/best-practices)).
+- 바이브 코딩과 에이전틱 엔지니어링을 가르는 **첫 번째 안전장치**가 바로 이것입니다.
+
+### 핵심 개념 4가지
+
+| 개념 | 뜻 | 행정 비유 |
+| --- | --- | --- |
+| <Term id="repository">저장소</Term> (repository) | 변경 이력을 기록하는 폴더 | 문서대장이 붙은 서류철 |
+| <Term id="commit">커밋</Term> (commit) | 지금 상태를 메모와 함께 저장하는 세이브 포인트 | 결재 버전 + 변경 사유 |
+| <Term id="push">푸시</Term> (push) | 내 PC의 이력을 GitHub에 올리기 | 기록물실 이관 |
+| <Term id="gitignore">.gitignore</Term> | 올리지 말 파일 목록 | 대외비 분류 |
+
+아래에서 직접 커밋하고, 망가뜨리고, 되살려 보세요.
+
+<Sim name="commit-timeline" />
+
+<Callout type="warn" title=".gitignore가 중요해지는 이유">
+  4~6회차에서는 비밀번호·API 키가 담긴 `.env` 파일이 생깁니다. 이 파일을 GitHub에 올리는 것이 **가장 흔한 보안 사고**입니다. 저장소를 처음 만들 때부터 .gitignore에 넣어 두세요.
+</Callout>
+
+**브랜치와 풀 리퀘스트**는 "원본을 건드리지 않고 시험하는 사본" 정도로만 알아 두면 됩니다. 심화 실습에서 한 번 체험합니다.
+
+### 말로 하는 Git — 외울 필요 없는 문장들
+
+| 하고 싶은 것 | Claude Code에게 하는 말 |
+| --- | --- |
+| 시작 | `이 폴더를 Git 저장소로 만들고, 올리면 안 되는 파일은 .gitignore에 넣어줘` |
+| 저장 | `지금까지 바뀐 내용을 한글 메시지로 커밋해줘` |
+| 확인 | `커밋 이력을 날짜와 함께 표로 보여줘` |
+| 비교 | `마지막 커밋 이후 뭐가 바뀌었는지 쉽게 설명해줘` |
+| 되돌리기 | `어제 커밋 상태로 파일을 되돌려줘. 지금 상태는 따로 보관하고` |
+| 업로드 | `GitHub에 비공개 저장소를 만들고 올려줘` |
+
+<Callout title="습관 하나만 남긴다면">
+  **잘 돌아갈 때마다 커밋.** "기능 하나 완성 = 커밋 하나"를 CLAUDE.md에 규칙으로 적어 두면 Claude가 알아서 챙깁니다.
+</Callout>
+
+### 좋은 커밋 메시지
+
+<Compare
+  bad="수정"
+  badNote="한 달 뒤에 보면 무엇을 왜 바꿨는지 알 수 없습니다."
+  good="출장비 계산기: 광역시 숙박 상한 8만 원으로 변경"
+  goodNote="무엇을(대상) + 어떻게(변경 내용). 결재 문서의 변경 사유처럼 씁니다. Claude에게 '한글 메시지로'라고만 해도 이렇게 써 줍니다."
+/>
+
+## 사전 준비 (수업 전 완료)
+
+<Steps>
+<FdStep>
+[GitHub](https://github.com/signup) 계정 가입 (업무용 이메일 권장). 2단계 인증 설정을 요구하면 휴대폰으로 설정합니다.
+</FdStep>
+<FdStep>
+Git 설치 확인 — [설치 가이드](/start/setup#git)
+</FdStep>
+<FdStep>
+GitHub 로그인 연동 — Claude Code에게 안내를 받고, 브라우저 로그인은 본인이 직접 합니다.
+
+<PromptCard id="gh-login" compact />
+</FdStep>
+</Steps>
+
+## 시연
+
+강사가 출장비 계산기에 일부러 "배경을 형광 분홍, 글자 3배"를 요청해 망가뜨린 뒤, 커밋으로 되살리는 장면을 보여 줍니다.
+
+## 실습
+
+2회차에 만든 도구 폴더(없으면 [자료실](/downloads)의 출장비 계산기 완성본)를 Claude Code에서 엽니다.
+
+<Lab session={3} title="실습 3 · 세이브하고, 망치고, 되살리고, 올리기" level="필수" minutes={14}>
+
+<Step id="3-1" title="첫 커밋">
+<PromptCard id="git-init" />
+<Expected>{`
+✓ Git 저장소 생성
+✓ .gitignore 작성: 실습원본/*.xlsx, .env*
+✓ 첫 커밋  a1b2c3d  "출장비 계산기 첫 버전"
+`}</Expected>
+<Trouble>
+<Issue q="'git'을 찾을 수 없다고 나와요">Git이 설치되지 않은 상태입니다. Windows는 Git for Windows를 설치한 뒤 Claude Code를 다시 시작하세요.</Issue>
+<Issue q="이름과 이메일을 설정하라고 해요">처음 한 번만 필요합니다. "Git 사용자 이름은 홍길동, 이메일은 내 GitHub 이메일로 설정해줘"라고 요청하세요.</Issue>
+</Trouble>
+</Step>
+
+<Step id="3-2" title="일부러 망치고 되살리기">
+
+먼저 망가뜨립니다.
+
+<PromptCard title="일부러 망가뜨리기" text="배경을 형광 분홍으로, 글자는 3배로 키워줘." />
+
+브라우저로 열어 확인한 뒤 되돌립니다.
+
+<PromptCard id="git-restore" />
+
+원래 모습으로 돌아온 것을 눈으로 확인하세요. 이것이 세이브 포인트의 힘입니다.
+</Step>
+
+<Step id="3-3" title="GitHub에 비공개 저장소로 올리기">
+<PromptCard id="git-push-new" />
+<p>알려 준 주소를 브라우저로 열어 파일과 커밋 이력이 올라간 것을 확인하세요. 저장소 이름 옆에 <b>Private</b> 표시가 있어야 합니다.</p>
+<Trouble>
+<Issue q="권한이 없다(permission denied)고 나와요">GitHub 로그인 연동이 안 된 상태입니다. 위의 'GitHub CLI 설치·로그인 안내' 프롬프트로 로그인부터 하세요.</Issue>
+<Issue q="2단계 인증 코드를 물어봐요">휴대폰 인증 앱이나 문자로 받은 코드를 브라우저에 직접 입력하세요. AI에게 코드를 알려 주지 않습니다.</Issue>
+</Trouble>
+</Step>
+
+</Lab>
+
+<Lab session={3} title="더 해 보기 · 이력 보기와 변경 설명 듣기" level="선택" minutes={5}>
+<Step id="3-4" title="커밋 이력 표로 보기">
+<PromptCard id="git-log" compact />
+</Step>
+<Step id="3-5" title="바뀐 내용 쉽게 설명 듣기">
+<PromptCard id="git-diff" compact />
+</Step>
+</Lab>
+
+<Lab session={3} title="심화 · 브랜치에서 안전하게 실험하기" level="심화" minutes={8}>
+<Step id="3-6" title="브랜치 만들어 실험하고 합치거나 버리기">
+<PromptCard id="git-branch-try" />
+</Step>
+</Lab>
+
+## 정리
+
+<KeyPoints
+  items={[
+    '커밋은 세이브 포인트, 푸시는 클라우드 백업. 명령어는 Claude가, 판단은 내가.',
+    '저장소는 기본 비공개(private). 업무 자료가 든 저장소를 공개로 만들지 않는다.',
+    '.env 같은 비밀 파일은 처음부터 .gitignore에. 실수로 올렸다면 키를 재발급한다.',
+  ]}
+/>
+
+<PromptCard id="gitignore-leak" />
+
+다음 회차에서는 GitHub에 올린 코드를 **Vercel에 연결해 그대로 웹사이트로** 만듭니다.
+
+## 복습
+
+<Quiz session={3} />
+
+### 과제
+
+<Assignment id="s3" title="내 도구를 저장소로 관리하기" placeholder="GitHub 저장소 주소와 커밋 이력 3줄을 붙여 넣으세요.">
+  2회차 과제로 기획한 도구(또는 실습 도구)를 저장소로 만들고, 기능을 하나 고칠 때마다 커밋해 보세요.
+</Assignment>
+
+<SessionPrompts n={3} />
+
+<Callout title="자주 묻는 질문 — 그냥 클라우드 드라이브에 올리면 안 되나요?">
+  드라이브는 **파일**을 저장하고, Git은 **무엇을 왜 바꿨는지**를 저장합니다. 그리고 다음 회차의 배포 서비스(Vercel)가 GitHub와 연결됩니다.
+</Callout>
+
+<NextSession n={3} />

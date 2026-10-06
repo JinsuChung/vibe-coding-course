@@ -1,0 +1,158 @@
+---
+title: 4회차 · 웹앱과 Vercel 배포
+description: GitHub에 올린 코드를 Vercel에 연결해, 링크 하나로 동료와 공유하는 웹앱을 만듭니다.
+---
+
+<SessionHeader n={4} />
+
+<Checklist list="prep-4" compact />
+
+## 개념
+
+### 로컬 도구에서 서비스로
+
+- 2회차의 HTML 도구는 **내 PC에서만** 열립니다. 동료가 쓰려면 파일을 메일로 보내야 하고, 고칠 때마다 다시 보내야 합니다.
+- 서버에 올리면 **주소 하나로 누구나 같은 최신 버전**을 씁니다. 이것이 <Term id="deploy">배포</Term>입니다.
+- <Term id="vercel">Vercel</Term>은 GitHub 저장소를 연결해 두면 **푸시할 때마다 자동으로 다시 배포**합니다. 3회차의 커밋·푸시가 곧 업데이트 버튼이 됩니다.
+
+<Sim name="deploy-pipeline" />
+
+<Callout title="이 사이트도 이렇게 만들었습니다">
+  지금 보고 있는 강의 사이트도 Claude Code로 만들어 GitHub에 올리고 Vercel로 배포했습니다. 내용을 고치고 푸시하면 1~2분 뒤 이 화면이 바뀝니다. 소스는 [GitHub 저장소](https://github.com/JinsuChung/vibe-coding-course)에서 볼 수 있어요.
+</Callout>
+
+### 기술 용어는 딱 세 개만
+
+| 용어 | 뜻 |
+| --- | --- |
+| <Term id="nextjs">Next.js</Term> | 웹앱의 뼈대(<Term id="framework">프레임워크</Term>). Vercel이 만들어 궁합이 좋다. 구조는 Claude가 알아서 잡는다 |
+| <Term id="localhost">localhost</Term> | 내 PC에서만 열리는 시험용 주소. 배포 전 확인용 |
+| <Term id="env">환경변수</Term> | 비밀번호·키처럼 코드에 적으면 안 되는 값을 따로 보관하는 칸. 5~6회차에서 본격 사용 |
+
+### Vercel 무료 요금제 — 꼭 알아야 할 것
+
+- 무료(Hobby) 요금제: <Fact k="vercel.hobby" />. 교육·시제품에는 충분합니다.
+- 단, **비상업·개인 용도로만** 쓸 수 있습니다. 기관의 정식 업무 서비스로 운영하려면 Pro(<Fact k="vercel.pro" />) 또는 학교 서버를 검토해야 합니다.
+- 배포 주소는 기본적으로 **누구나** 열 수 있습니다. 내부용이면 Vercel Authentication(무료 포함)으로 접근을 제한하거나, 개인정보를 넣지 않습니다.
+
+| 구분 | 로컬 HTML (2회차) | 배포한 웹앱 (4회차) |
+| --- | --- | --- |
+| 누가 쓰나 | 나, 또는 파일을 받은 사람 | 주소를 아는 누구나 |
+| 업데이트 | 파일을 다시 보내야 함 | 푸시하면 자동 반영 |
+| 휴대폰 | 어려움 | 바로 열림 |
+| 주의할 점 | 거의 없음 | 공개 범위, 개인정보, 요금제 조건 |
+
+## 사전 준비
+
+<Steps>
+<FdStep>
+[Node.js](https://nodejs.org) LTS 버전 설치. 또는 Claude Code에게 맡기기:
+
+<PromptCard id="node-check" compact />
+</FdStep>
+<FdStep>
+[Vercel](https://vercel.com/signup) 가입 — **Continue with GitHub**로 가입하면 저장소 연결이 가장 쉽습니다.
+</FdStep>
+</Steps>
+
+## 시연
+
+강사가 공모 보드를 만들어 배포하고, 제목을 바꿔 푸시한 뒤 1분 만에 수강생 휴대폰 화면이 바뀌는 것을 보여 줍니다. 일부러 빌드 에러를 낸 뒤 에러 로그를 Claude Code에 붙여 넣어 고치는 장면도 포함합니다.
+
+## 실습
+
+**주제: 연구과제 공모 D-day 보드** — 사업명, 주관기관, 마감일, 담당자를 카드로 보여 주고 마감 임박 순으로 정렬합니다. 데이터는 일단 코드 안에 가상으로 넣고, 5회차에서 데이터베이스로 옮깁니다.
+
+<Lab session={4} title="실습 4-1 · 기획부터 내 PC에서 띄우기까지" level="필수" minutes={12}>
+
+<Step id="4-1a" title="기획 인터뷰 받기">
+<PromptCard id="web-interview" />
+</Step>
+
+<Step id="4-1b" title="Next.js로 만들고 내 PC에서 실행">
+<PromptCard id="web-build" />
+<Expected>{`
+✓ Next.js 프로젝트 생성 (grant-board)
+✓ 가상 공모 10건 추가 (data/grants.ts)
+● 개발 서버 실행 중 → http://localhost:3000
+> 브라우저에서 위 주소를 열어 보세요.
+`}</Expected>
+<p>localhost 주소를 브라우저로 열어 확인합니다.</p>
+<Trouble>
+<Issue q="npm install이 한참 걸리거나 실패해요">처음에는 수 분 걸릴 수 있습니다. 실패하면 에러 메시지를 그대로 붙여 넣고 "고쳐줘"라고 하세요. 학교 네트워크에서 막히면 휴대폰 핫스팟으로 시험해 보세요.</Issue>
+<Issue q="포트(3000)가 이미 사용 중이래요">다른 프로그램이 같은 주소를 쓰고 있습니다. "다른 포트로 실행해줘"라고 하세요.</Issue>
+</Trouble>
+</Step>
+
+<Step id="4-1c" title="말로 화면 고치기">
+<PromptCard id="web-tweak" />
+<p>보이는 것을 그대로 말하면 됩니다. 화면을 캡처해 끌어다 놓고 "여기를 이렇게"라고 해도 됩니다.</p>
+</Step>
+
+</Lab>
+
+<Lab session={4} title="실습 4-2 · 배포하기" level="필수" minutes={10}>
+
+<Step id="4-2a" title="GitHub에 올리기">
+<PromptCard id="web-push" />
+</Step>
+
+<Step id="4-2b" title="Vercel에서 저장소 연결하고 배포">
+<Steps>
+<FdStep>[Vercel 대시보드](https://vercel.com/dashboard)에서 **Add New → Project**</FdStep>
+<FdStep>방금 올린 저장소 옆의 **Import**</FdStep>
+<FdStep>설정은 그대로 두고 **Deploy**(배포)</FdStep>
+<FdStep>1~2분 뒤 `….vercel.app` 주소가 나오면 성공</FdStep>
+</Steps>
+<p>대안: Claude Code에게 Vercel CLI로 배포를 맡길 수도 있습니다.</p>
+<PromptCard id="vercel-cli" compact />
+</Step>
+
+</Lab>
+
+<Lab session={4} title="실습 4-3 · 자동 반영 체험" level="필수" minutes={6}>
+<Step id="4-3a" title="고치고 푸시하면 1분 뒤 반영">
+<PromptCard id="web-retitle" />
+<p>1~2분 뒤 배포 주소를 새로 고쳐 제목이 바뀐 것을 확인하세요.</p>
+</Step>
+<Step id="4-3b" title="옆 사람과 주소 바꿔 휴대폰으로 열어 보기">
+<p>휴대폰에서 보기 불편하면 이렇게 고칩니다.</p>
+<PromptCard id="web-mobile" compact />
+</Step>
+</Lab>
+
+<Lab session={4} title="빌드가 실패했을 때" level="선택" minutes={5} goal="에러는 단서입니다. 그대로 붙여 넣으면 됩니다.">
+<Step id="4-4" title="에러 로그로 고치기">
+<PromptCard id="build-error" />
+</Step>
+</Lab>
+
+## 정리
+
+<KeyPoints
+  items={[
+    '흐름: 만들기(Claude Code) → 저장(Git) → 올리기(GitHub) → 배포(Vercel, 자동)',
+    '배포 주소는 누구나 볼 수 있다. 개인정보·내부 자료는 올리지 않는다.',
+    'Vercel 무료 요금제는 비상업·개인 용도. 정식 운영은 따로 검토한다.',
+  ]}
+/>
+
+다음 회차: 지금은 공모 데이터를 고치려면 코드를 바꿔야 합니다. **화면에서 바로 추가·수정**하려면 데이터베이스가 필요합니다.
+
+## 복습
+
+<Quiz session={4} />
+
+### 과제
+
+<Assignment id="s4" title="배포 주소 제출" placeholder="https://….vercel.app">
+  배포 주소를 동료와 교환해 휴대폰으로 열어 보고, 고칠 점 하나를 서로 알려 주세요.
+</Assignment>
+
+<SessionPrompts n={4} />
+
+## 더 해 보기
+
+<RelatedExamples n={4} limit={6} />
+
+<NextSession n={4} />
