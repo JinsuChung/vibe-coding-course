@@ -1,0 +1,97 @@
+---
+title: 설치 가이드
+description: Claude Code부터 Git, Node.js, Python까지. 회차별로 필요한 것만 설치하면 됩니다.
+---
+
+화면 위쪽의 **Windows / macOS** 토글을 바꾸면 설명이 운영체제에 맞게 바뀝니다.
+
+| 프로그램 | 필요한 회차 | 비고 |
+| --- | --- | --- |
+| [Claude Code](#claude-code) | 1회차부터 | 데스크톱 앱 권장 |
+| [Python](#python) | 2회차 | 엑셀 처리용, Claude Code가 대신 설치해 주기도 함 |
+| [Git](#git) | 3회차 | Windows는 Git for Windows |
+| [Node.js](#nodejs) | 4회차 | 웹앱 실행용 |
+
+<Callout type="warn" title="학교 PC라면">
+  보안 정책 때문에 설치가 막힐 수 있습니다. 설치 권한이 없으면 전산 담당자에게 미리 요청하세요.
+</Callout>
+
+## Claude Code
+
+Claude Code는 <Fact k="claude.plan" />가 필요합니다.
+
+### 방법 1. 데스크톱 앱 (권장)
+
+터미널을 쓰지 않아도 되어 비개발자에게 가장 편합니다.
+
+<Steps>
+<FdStep>
+[claude.com/download](https://claude.com/download)에서 운영체제에 맞는 Claude 앱을 내려받아 설치합니다.
+</FdStep>
+<FdStep>
+앱을 열고 Claude 계정으로 로그인합니다. 비밀번호와 인증은 본인이 직접 입력합니다.
+</FdStep>
+<FdStep>
+상단의 **Code** 탭을 누르고, 작업할 폴더(예: 압축을 푼 실습 폴더)를 선택합니다.
+</FdStep>
+<FdStep>
+입력창에 `이 폴더에 어떤 파일이 있는지 알려줘`라고 써 보세요. 답이 오면 설치 완료입니다.
+</FdStep>
+</Steps>
+
+### 방법 2. 터미널 설치 (참고)
+
+<OSBlock
+  win={<>
+    <p>시작 메뉴에서 <b>PowerShell</b>을 열고 아래를 붙여 넣습니다.</p>
+    <pre><code>irm https://claude.ai/install.ps1 | iex</code></pre>
+    <p>설치가 끝나면 <b>새 PowerShell 창</b>을 열고 <code>claude --version</code>으로 확인한 뒤, 작업 폴더에서 <code>claude</code>를 입력해 시작합니다.</p>
+    <p>"claude를 찾을 수 없다"고 나오면 창을 닫고 새로 열어 보세요. 그래도 안 되면 <a href="https://code.claude.com/docs/en/troubleshoot-install">설치 문제 해결</a>을 확인합니다.</p>
+  </>}
+  mac={<>
+    <p><b>터미널</b> 앱(응용 프로그램 → 유틸리티)을 열고 아래를 붙여 넣습니다.</p>
+    <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+    <p>설치가 끝나면 새 터미널 창에서 <code>claude --version</code>으로 확인하고, 작업 폴더에서 <code>claude</code>를 입력해 시작합니다.</p>
+  </>}
+/>
+
+출처: [Claude Code 공식 설치 문서](https://code.claude.com/docs/en/setup) (2026-10-06 확인)
+
+## Python
+
+2회차 엑셀 처리에 쓰입니다. 직접 설치하지 않아도 Claude Code에게 맡길 수 있습니다.
+
+<PromptCard id="python-check" compact />
+
+<OSBlock
+  win={<p>직접 설치하려면 <a href="https://www.python.org/downloads/">python.org</a>에서 내려받아 설치하고, 설치 첫 화면에서 <b>Add python.exe to PATH</b>를 꼭 체크하세요.</p>}
+  mac={<p>macOS에는 기본 Python이 있는 경우가 많습니다. 없으면 Claude Code의 안내를 따르거나 <a href="https://www.python.org/downloads/">python.org</a>에서 설치하세요.</p>}
+/>
+
+## Git
+
+3회차부터 필요합니다.
+
+<OSBlock
+  win={<p><a href="https://git-scm.com/downloads/win">Git for Windows</a>를 설치합니다. 설치 중 선택지는 모두 기본값으로 두면 됩니다. Claude Code도 Git for Windows가 있으면 더 잘 동작합니다.</p>}
+  mac={<p>터미널에서 <code>git --version</code>을 입력하면, 없을 경우 설치 안내 창이 뜹니다. <b>설치</b>를 누르세요.</p>}
+/>
+
+GitHub 로그인 연동은 3회차에서 함께 합니다.
+
+<PromptCard id="gh-login" compact />
+
+## Node.js
+
+4회차 웹앱 실행에 필요합니다.
+
+<PromptCard id="node-check" compact />
+
+직접 설치하려면 [nodejs.org](https://nodejs.org)에서 **LTS** 버전을 내려받으세요.
+
+## 설치가 끝났는지 한 번에 확인
+
+<PromptCard
+  title="설치 상태 점검"
+  text="이 컴퓨터에 Python, Git, Node.js가 설치돼 있는지 확인하고 버전을 표로 보여줘. 없는 것은 설치 방법을 알려줘."
+/>
