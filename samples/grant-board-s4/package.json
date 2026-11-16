@@ -2,6 +2,6 @@
   "name": "grant-board",
   "private": true,
   "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
-  "dependencies": { "next": "^16.3.8", "react": "^19.3.0", "react-dom": "^19.3.0" },
+  "dependencies": { "next": "16.4.6", "react": "^19.3.0", "react-dom": "^19.3.0" },
   "devDependencies": { "typescript": "^5", "@types/react": "^19", "@types/node": "^22" }
 }
